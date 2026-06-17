@@ -5,6 +5,8 @@ import GroupList from './components/GroupList.vue'
 import ConfigManager from './components/ConfigManager.vue'
 import ProjectNavigator from './components/ProjectNavigator.vue'
 import Notification from './components/Notification.vue'
+
+const version = __APP_VERSION__
 </script>
 
 <template>
@@ -17,7 +19,7 @@ import Notification from './components/Notification.vue'
         <h1 class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
           Chip Register Calculator
         </h1>
-        <p class="text-gray-500 dark:text-gray-400 mt-1 font-bold">芯片寄存器位计算工具 v2.2</p>
+        <p class="text-gray-500 dark:text-gray-400 mt-1 font-bold">芯片寄存器位计算工具 {{ version }}</p>
       </div>
     </header>
 
