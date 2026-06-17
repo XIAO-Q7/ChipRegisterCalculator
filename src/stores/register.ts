@@ -110,6 +110,11 @@ export const useRegisterStore = defineStore('register', () => {
     }
   }
 
+  function clearAll() {
+    const reg = activeRegister.value
+    reg.bits = new Array(reg.bitSize).fill(0)
+  }
+
   function updateBitsFromValue(val: bigint) {
     const reg = activeRegister.value
     for (let i = 0; i < reg.bitSize; i++) {
@@ -226,7 +231,7 @@ export const useRegisterStore = defineStore('register', () => {
   return {
     mode, chips, activeChipId, activeRegisterId, activeRegister, errorMessage,
     endianness, numericValue, hexValue, decValue, binValue, octValue,
-    setBitSize, toggleBit, updateBitsFromValue, addGroup, updateGroupValue,
+    setBitSize, toggleBit, clearAll, updateBitsFromValue, addGroup, updateGroupValue,
     removeGroup, getGroupValue, addChip, addRegister, exportConfig, importConfig
   }
 })
