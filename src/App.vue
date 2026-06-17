@@ -6,7 +6,7 @@ import ConfigManager from './components/ConfigManager.vue'
 import ProjectNavigator from './components/ProjectNavigator.vue'
 import Notification from './components/Notification.vue'
 
-const version = __APP_VERSION__
+const version = import.meta.env.VITE_APP_VERSION
 </script>
 
 <template>

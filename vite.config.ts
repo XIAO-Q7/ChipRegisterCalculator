@@ -12,11 +12,10 @@ function getGitVersion(): string {
   }
 }
 
+process.env.VITE_APP_VERSION = getGitVersion()
+
 // https://vite.dev/config/
 export default defineConfig({
-  define: {
-    __APP_VERSION__: JSON.stringify(getGitVersion()),
-  },
   plugins: [
     vue(),
     tailwindcss(),
