@@ -16,6 +16,7 @@ process.env.VITE_APP_VERSION = getGitVersion()
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: process.env.BASE_URL || '/',
   plugins: [
     vue(),
     tailwindcss(),
