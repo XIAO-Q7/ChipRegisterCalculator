@@ -5,9 +5,10 @@ import { execSync } from 'child_process'
 
 function getGitVersion(): string {
   try {
-    return execSync('git describe --tags --always --dirty', { encoding: 'utf-8' }).trim()
+    const hash = execSync('git describe --always --dirty', { encoding: 'utf-8' }).trim()
+    return `0.0.0-${hash}`
   } catch {
-    return 'unknown'
+    return '0.0.0-unknown'
   }
 }
 
