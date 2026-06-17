@@ -8,7 +8,7 @@ function close() {
   store.errorMessage = null
 }
 
-function handleGlobalClick(e: MouseEvent) {
+function handleGlobalClick(_e: MouseEvent) {
   if (store.errorMessage) {
     close()
   }
