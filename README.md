@@ -4,7 +4,7 @@
 
 A visual register management tool for embedded and hardware engineers, featuring multi-radix value calculation, bit-field grouping, and project-level organization.
 
-Live demo: <https://chip.xiaoq7.com>
+Live demo: <https://register.xiaoq7.com>
 
 ## Tech Stack
 
