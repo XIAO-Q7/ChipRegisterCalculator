@@ -1,113 +1,130 @@
 # Chip Register Calculator
 
-芯片寄存器位计算工具 — 一款面向嵌入式/硬件工程师的寄存器可视化管理工具，支持多进制数值计算、位分组管理和工程化组织。
+**English** | [简体中文](README.zh-CN.md)
 
-## 技术栈
+A visual register management tool for embedded and hardware engineers, featuring multi-radix value calculation, bit-field grouping, and project-level organization.
 
-- **Vue 3** — Composition API + `<script setup>` SFC
-- **TypeScript** — 完整类型定义
-- **Vite 8** — 构建工具
-- **Pinia 3** — 全局状态管理
-- **Tailwind CSS 4** — 原子化样式，支持暗色模式
+Live demo: <https://chip.xiaoq7.com>
 
-## 功能特性
+## Tech Stack
 
-### 位网格可视化 (BitGrid)
+- **Vue 3** — Composition API + `<script setup>` SFCs
+- **TypeScript** — fully typed
+- **Vite 8** — build tool
+- **Pinia 3** — global state management
+- **Tailwind CSS 4** — utility-first styling with dark mode support
 
-- 以 16 列网格展示寄存器位图，直观呈现每个 bit 的置位状态
-- **单击**切换单个位的 0/1 状态
-- **拖拽**选择连续位范围，一键创建分组
-- 支持 8/16/32/64 位及自定义位宽
+## Features
 
-### 多进制数值显示与编辑
+### Bit Grid Visualization (BitGrid)
 
-- 同时显示 **HEX（十六进制）**、**DEC（十进制）**、**BIN（二进制）**、**OCT（八进制）**
-- 任意进制编辑后自动同步到所有进制和位图
-- 支持 **Little Endian** 和 **Big Endian** 字节序切换
+- Displays the register as a 16-column bit grid, showing the state of every bit at a glance
+- **Left-click** a bit to toggle it between 0 and 1
+- **Left-drag** across a range to flip multiple contiguous bits at once
+- **Right-drag** across a range to create a bit group
+- **Clear** button resets all bits to 0
+- Supports 8/16/32/64-bit and custom register widths
 
-### 位分组管理 (Bit Groups)
+### Multi-Radix Display and Editing
 
-- 在寄存器中划分功能位域，每个分组独立命名
-- 分组以颜色标识，在位网格中高亮显示边界
-- 分组值支持 HEX/DEC 直接输入编辑
-- **映射规则**：可配置"数值等于"或"位置位"规则，一键点击应用/取消（Toggle 逻辑）
-- 分组范围不可重叠，重复选择同一范围会删除该分组
+- Shows **HEX**, **DEC**, **BIN**, and **OCT** values simultaneously
+- Editing any radix instantly syncs all other radixes and the bit grid
+- Switch between **Little Endian** and **Big Endian** bit ordering
 
-### 工程模式 (Project Mode)
+### Bit Groups
 
-- **Simple 模式**：快速操作单个默认寄存器
-- **Project 模式**：层级化管理 `芯片(Chip) → 寄存器(Register)`，适用于多芯片、多寄存器场景
-- 项目导航器支持折叠/展开、动态增删芯片和寄存器
+- Split a register into named bit fields
+- Each group is color-coded, with its boundary highlighted in the bit grid
+- Edit a group's value directly in HEX or DEC
+- **Mapping rules**: define "value equals" or "bit set" rules, then click to apply or remove them (toggle behavior)
+- Group ranges cannot overlap; selecting the exact same range again removes that group
 
-### 配置导入/导出
+### Project Mode
 
-- 导出为 JSON，支持复制到剪贴板或保存为文件
-- 支持粘贴 JSON 或上传文件导入，完整恢复工作状态
+- **Simple mode**: quickly work with a single default register
+- **Project mode**: organize registers hierarchically as `Chip → Register`, ideal for multi-chip, multi-register work
+- The project navigator supports collapsing/expanding and adding chips and registers on the fly
 
-## 项目结构
+### Config Import / Export
+
+- Export as JSON, either copied to the clipboard or saved as a file
+- Import by pasting JSON or uploading a file to fully restore your workspace
+
+### Internationalization
+
+- The UI is available in **English** and **Simplified Chinese**; switch with the buttons in the top-right corner
+- The language is auto-detected from the browser on first visit, and your choice is remembered afterwards
+- All UI strings live in `src/i18n.ts`, making it easy to edit text or add a new language
+
+## Project Structure
 
 ```
 ChipRegisterCalculator/
-├── index.html                  # 入口 HTML
-├── vite.config.ts              # Vite 配置 (Vue + Tailwind 插件)
-├── package.json                # 依赖管理
-├── tsconfig.json               # TypeScript 配置
+├── index.html                  # Entry HTML
+├── vite.config.ts              # Vite config (Vue + Tailwind plugins)
+├── package.json                # Dependencies
+├── tsconfig.json               # TypeScript config
 ├── public/
-│   └── favicon.svg             # 网站图标
+│   └── favicon.svg             # Site icon
 └── src/
-    ├── main.ts                 # 应用入口，挂载 Pinia + Vue
-    ├── App.vue                 # 根组件，三栏布局
-    ├── style.css               # 全局样式 + Tailwind 导入
+    ├── main.ts                 # App entry, mounts Pinia + Vue
+    ├── App.vue                 # Root component, three-column layout + language switcher
+    ├── i18n.ts                 # UI strings and locale switching (en/zh)
+    ├── style.css               # Global styles + Tailwind import
     ├── stores/
-    │   └── register.ts         # Pinia Store：核心状态与业务逻辑
+    │   └── register.ts         # Pinia store: core state and business logic
     └── components/
-        ├── BitGrid.vue         # 位网格可视化组件
-        ├── ValueDisplay.vue    # 多进制值展示与编辑
-        ├── GroupList.vue       # 位分组列表管理
-        ├── ProjectNavigator.vue # 项目/芯片/寄存器导航
-        ├── ConfigManager.vue   # 配置导入导出
-        └── Notification.vue    # 全局错误提示
+        ├── BitGrid.vue         # Bit grid visualization
+        ├── ValueDisplay.vue    # Multi-radix display and editing
+        ├── GroupList.vue       # Bit group management
+        ├── ProjectNavigator.vue # Project / chip / register navigation
+        ├── ConfigManager.vue   # Config import / export
+        └── Notification.vue    # Global error toast
 ```
 
-## 快速开始
+## Getting Started
 
-### 安装依赖
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-### 启动开发服务器
+### Start the dev server
 
 ```bash
 npm run dev
 ```
 
-### 构建生产版本
+### Build for production
 
 ```bash
 npm run build
 ```
 
-### 预览构建结果
+### Preview the production build
 
 ```bash
 npm run preview
 ```
 
-## 使用说明
+## Usage
 
-| 操作 | 方式 |
-|------|------|
-| 切换位值 | 在位网格中**单击**某个位按钮 |
-| 创建分组 | 在位网格中**拖拽**选择连续的位范围 |
-| 调整位宽 | 在属性配置面板中选择 8/16/32/64 或输入自定义值 |
-| 编辑数值 | 在 HEX/DEC 输入框中直接输入，自动同步 |
-| 编辑分组值 | 在分组卡片中输入 HEX/DEC 值 |
-| 应用映射 | 点击分组内的配置按钮，切换对应值 |
-| 添加芯片/寄存器 | 切换到 Project 模式，通过导航器操作 |
-| 导入导出 | 使用底部配置管理面板 |
+| Action | How |
+|--------|-----|
+| Toggle a bit | **Left-click** a bit in the grid |
+| Flip a range of bits | **Left-drag** across contiguous bits in the grid |
+| Create a group | **Right-drag** across contiguous bits in the grid |
+| Delete a group | Right-drag the same range again, or click the delete button on the group card |
+| Clear all bits | Click the **Clear** button at the top-right of the bit grid |
+| Change bit width | Pick 8/16/32/64 or enter a custom value in the Attributes panel |
+| Edit the value | Type into the HEX/DEC fields; everything syncs automatically |
+| Edit a group value | Enter a HEX/DEC value in the group card |
+| Apply a mapping | Click a rule button inside a group to toggle its value |
+| Add chips/registers | Switch to Project mode and use the navigator |
+| Import / export | Use the Config panel at the bottom |
+| Switch language | Click the "中文 / English" buttons in the top-right corner |
 
-## 许可证
+## License
 
 MIT
