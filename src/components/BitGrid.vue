@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRegisterStore } from '../stores/register'
+import { t } from '../i18n'
 
 const store = useRegisterStore()
 
@@ -73,7 +74,7 @@ function handleMouseUp() {
       } else {
         const start = dragStart.value
         const end = dragEnd.value
-        store.addGroup(`Group ${store.activeRegister.groups.length + 1}`, start, end)
+        store.addGroup(t('group.defaultName', { n: store.activeRegister.groups.length + 1 }), start, end)
       }
     }
     hasDragged = false
@@ -118,9 +119,9 @@ onUnmounted(() => {
           @click="store.clearAll()"
           class="px-2 py-0.5 text-[10px] font-bold text-red-500 hover:text-white hover:bg-red-500 border border-red-300 dark:border-red-700 rounded transition-colors uppercase tracking-tighter"
         >
-          Clear
+          {{ t('bitGrid.clear') }}
         </button>
-        <div class="text-[9px] font-black text-gray-400 uppercase tracking-widest bg-gray-50 dark:bg-gray-900 px-2 py-0.5 rounded">BITS VIEW</div>
+        <div class="text-[9px] font-black text-gray-400 uppercase tracking-widest bg-gray-50 dark:bg-gray-900 px-2 py-0.5 rounded">{{ t('bitGrid.bitsView') }}</div>
       </div>
     </div>
 
@@ -159,10 +160,10 @@ onUnmounted(() => {
     </div>
 
     <div class="mt-4 text-[11px] text-gray-400 flex justify-between items-center border-t border-gray-100 dark:border-gray-700 pt-3">
-      <span class="opacity-70">左键拖拽翻转位值，右键拖拽管理分组。</span>
+      <span class="opacity-70">{{ t('bitGrid.hint') }}</span>
       <div class="flex gap-3 items-center font-bold uppercase tracking-tighter">
-        <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-white border border-blue-500 rounded-sm"></span><span class="text-blue-500">Set</span></div>
-        <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-gray-50 border border-gray-200 rounded-sm"></span><span>Clr</span></div>
+        <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-white border border-blue-500 rounded-sm"></span><span class="text-blue-500">{{ t('bitGrid.set') }}</span></div>
+        <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-gray-50 border border-gray-200 rounded-sm"></span><span>{{ t('bitGrid.clr') }}</span></div>
       </div>
     </div>
   </div>

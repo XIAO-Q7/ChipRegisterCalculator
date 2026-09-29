@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRegisterStore } from '../stores/register'
+import { t } from '../i18n'
 
 const store = useRegisterStore()
 const newChipName = ref('')
@@ -44,7 +45,7 @@ function selectRegister(chipId: string, regId: string) {
 <template>
   <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col h-full overflow-hidden">
     <div class="p-4 border-b dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-900/50">
-      <h3 class="font-bold text-xs uppercase tracking-wider text-gray-500">项目资源 (Project)</h3>
+      <h3 class="font-bold text-xs uppercase tracking-wider text-gray-500">{{ t('project.title') }}</h3>
       <button 
         @click="store.mode = store.mode === 'simple' ? 'project' : 'simple'"
         class="text-[10px] px-2 py-1 rounded border-2 transition-all font-bold"
@@ -52,7 +53,7 @@ function selectRegister(chipId: string, regId: string) {
           ? 'bg-blue-500 text-white border-blue-600 shadow-sm' 
           : 'bg-white dark:bg-gray-800 text-gray-400 border-gray-200 dark:border-gray-600'"
       >
-        {{ store.mode === 'project' ? 'PROJECT' : 'SIMPLE' }}
+        {{ store.mode === 'project' ? t('project.modeProject') : t('project.modeSimple') }}
       </button>
     </div>
 
@@ -63,7 +64,7 @@ function selectRegister(chipId: string, regId: string) {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
-        <p class="text-[10px] text-gray-400 font-medium">SIMPLE 模式<br/>操作默认寄存器</p>
+        <p class="text-[10px] text-gray-400 font-medium">{{ t('project.simpleHint1') }}<br/>{{ t('project.simpleHint2') }}</p>
       </div>
 
       <div v-else class="space-y-4">
@@ -87,7 +88,7 @@ function selectRegister(chipId: string, regId: string) {
             <button 
               @click="addingRegForChipId = chip.id"
               class="opacity-0 group-hover:opacity-100 p-1 bg-blue-500 text-white rounded transition-all hover:bg-blue-600 shadow-sm"
-              title="添加寄存器"
+              :title="t('project.addRegister')"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M12 4v16m8-8H4" />
@@ -117,18 +118,18 @@ function selectRegister(chipId: string, regId: string) {
             <div v-if="addingRegForChipId === chip.id" class="p-3 bg-gray-50 dark:bg-gray-900/50 rounded-xl space-y-2 border border-blue-100 dark:border-blue-900/30 shadow-inner">
               <input 
                 v-model="newRegName"
-                placeholder="寄存器名称..."
+                :placeholder="t('project.regNamePlaceholder')"
                 class="w-full text-[10px] p-2 bg-white dark:bg-gray-800 border rounded outline-none focus:ring-1 focus:ring-blue-500"
                 @keyup.enter="handleAddRegister(chip.id)"
               />
               <input 
                 v-model="newRegAddr"
-                placeholder="地址(如 0x00)"
+                :placeholder="t('project.regAddrPlaceholder')"
                 class="w-full text-[10px] p-2 bg-white dark:bg-gray-800 border rounded outline-none focus:ring-1 focus:ring-blue-500 font-mono"
               />
               <div class="flex gap-1 pt-1">
-                <button @click="addingRegForChipId = null" class="flex-1 text-[9px] py-1 bg-gray-200 dark:bg-gray-700 rounded font-bold">取消</button>
-                <button @click="handleAddRegister(chip.id)" class="flex-1 text-[9px] py-1 bg-blue-500 text-white rounded font-bold">完成</button>
+                <button @click="addingRegForChipId = null" class="flex-1 text-[9px] py-1 bg-gray-200 dark:bg-gray-700 rounded font-bold">{{ t('project.cancel') }}</button>
+                <button @click="handleAddRegister(chip.id)" class="flex-1 text-[9px] py-1 bg-blue-500 text-white rounded font-bold">{{ t('project.done') }}</button>
               </div>
             </div>
           </div>
@@ -141,18 +142,18 @@ function selectRegister(chipId: string, regId: string) {
             @click="isAddingChip = true"
             class="w-full py-2 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg text-[10px] font-bold text-gray-400 hover:border-blue-500 hover:text-blue-500 transition-all uppercase tracking-widest"
           >
-            + Add New Chip
+            {{ t('project.addChip') }}
           </button>
           <div v-else class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-900/30 space-y-2 shadow-inner">
             <input 
               v-model="newChipName"
-              placeholder="输入芯片名称..."
+              :placeholder="t('project.chipNamePlaceholder')"
               class="w-full text-xs p-2 bg-white dark:bg-gray-800 border rounded outline-none focus:ring-1 focus:ring-blue-500 font-bold"
               @keyup.enter="handleAddChip"
             />
             <div class="flex gap-2">
-              <button @click="isAddingChip = false" class="flex-1 text-[10px] py-1.5 bg-gray-200 dark:bg-gray-700 rounded font-bold">取消</button>
-              <button @click="handleAddChip" class="flex-1 text-[10px] py-1.5 bg-blue-500 text-white rounded font-bold shadow-md shadow-blue-500/20">完成</button>
+              <button @click="isAddingChip = false" class="flex-1 text-[10px] py-1.5 bg-gray-200 dark:bg-gray-700 rounded font-bold">{{ t('project.cancel') }}</button>
+              <button @click="handleAddChip" class="flex-1 text-[10px] py-1.5 bg-blue-500 text-white rounded font-bold shadow-md shadow-blue-500/20">{{ t('project.done') }}</button>
             </div>
           </div>
         </div>
@@ -162,7 +163,7 @@ function selectRegister(chipId: string, regId: string) {
     <div class="p-4 bg-gray-50 dark:bg-gray-900/50 border-t dark:border-gray-700">
       <div class="flex items-center justify-between">
         <div class="min-w-0">
-          <div class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">Current Target</div>
+          <div class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">{{ t('project.currentTarget') }}</div>
           <div class="text-[11px] font-mono truncate dark:text-gray-300 font-bold">
             {{ store.activeRegister.address }}
           </div>

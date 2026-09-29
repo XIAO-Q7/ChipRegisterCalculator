@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import type { MessageKey } from '../i18n'
 
 export type Endianness = 'big' | 'little'
 
@@ -38,7 +39,8 @@ export const useRegisterStore = defineStore('register', () => {
   const chips = ref<Chip[]>([])
   const activeChipId = ref<string | null>(null)
   const activeRegisterId = ref<string | null>(null)
-  const errorMessage = ref<string | null>(null)
+  /** i18n key of the current error; rendered via t() so it follows the active locale */
+  const errorMessage = ref<MessageKey | null>(null)
 
   const simpleRegister = ref<Register>({
     id: 'simple',
@@ -99,8 +101,8 @@ export const useRegisterStore = defineStore('register', () => {
   const binValue = computed(() => numericValue.value.toString(2).padStart(activeRegister.value.bitSize, '0'))
   const octValue = computed(() => numericValue.value.toString(8))
 
-  function setError(msg: string) {
-    errorMessage.value = msg
+  function setError(key: MessageKey) {
+    errorMessage.value = key
   }
 
   function toggleBit(index: number) {
@@ -138,7 +140,7 @@ export const useRegisterStore = defineStore('register', () => {
     }
 
     if (reg.groups.some(g => s <= g.end && e >= g.start)) {
-      setError('分组位范围不能重叠！')
+      setError('error.groupOverlap')
       return false
     }
 
@@ -223,7 +225,7 @@ export const useRegisterStore = defineStore('register', () => {
       if (config.activeRegisterId) activeRegisterId.value = config.activeRegisterId
       return true
     } catch (e) {
-      setError('导入失败')
+      setError('error.importFailed')
       return false
     }
   }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRegisterStore, type BitGroup, type ValueMapping } from '../stores/register'
+import { t } from '../i18n'
 
 const store = useRegisterStore()
 
@@ -50,7 +51,7 @@ function applyMapping(group: BitGroup, mapping: ValueMapping) {
       } else {
         store.updateGroupValue(group, mVal)
       }
-    } catch { alert('无效的映射值') }
+    } catch { alert(t('group.invalidMapping')) }
   } else if (mapping.type === 'bit') {
     try {
       const bitOffset = parseInt(mapping.value.trim())
@@ -91,12 +92,12 @@ function handleDecInput(group: BitGroup, event: Event) {
 <template>
   <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg h-full overflow-y-auto min-h-[500px]">
     <h3 class="text-lg font-bold mb-4 dark:text-white border-b pb-2 flex justify-between items-center text-center">
-      <span>位分组 (Bit Groups)</span>
+      <span>{{ t('group.title') }}</span>
       <span class="text-xs font-normal text-gray-400">#{{ store.activeRegister.groups.length }}</span>
     </h3>
     
     <div v-if="store.activeRegister.groups.length === 0" class="text-gray-400 text-sm italic py-8 text-center">
-      在位网格上拖拽来创建分组。
+      {{ t('group.empty') }}
     </div>
 
     <div class="space-y-6">
@@ -110,14 +111,14 @@ function handleDecInput(group: BitGroup, event: Event) {
           <input 
             v-model="group.name"
             class="bg-transparent font-bold dark:text-white outline-none focus:ring-2 focus:ring-gray-300 rounded px-1 w-2/3"
-            placeholder="分组名称"
+            :placeholder="t('group.namePlaceholder')"
           />
           <div class="flex gap-1">
             <button 
               @click="toggleMappingEdit(group.id)"
               class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               :class="editingMappings[group.id] ? 'text-blue-500' : 'text-gray-400'"
-              title="配置备注规则"
+              :title="t('group.editMappings')"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
@@ -126,7 +127,7 @@ function handleDecInput(group: BitGroup, event: Event) {
             <button 
               @click="store.removeGroup(group.id)"
               class="text-gray-400 hover:text-red-500 transition-colors p-1"
-              title="删除分组"
+              :title="t('group.delete')"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -160,7 +161,7 @@ function handleDecInput(group: BitGroup, event: Event) {
         <div class="space-y-2">
           <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
             <span class="font-mono bg-white dark:bg-gray-700 px-1 rounded border">[{{ group.end }}:{{ group.start }}]</span>
-            <span class="italic text-[10px]">{{ group.end - group.start + 1 }} bits</span>
+            <span class="italic text-[10px]">{{ t('group.bits', { n: group.end - group.start + 1 }) }}</span>
           </div>
 
           <div class="flex items-center gap-2">
@@ -189,19 +190,19 @@ function handleDecInput(group: BitGroup, event: Event) {
 
         <div v-if="editingMappings[group.id]" class="mt-4 pt-4 border-t border-dashed border-gray-200 dark:border-gray-700 space-y-3">
           <div class="flex justify-between items-center">
-            <span class="text-[10px] font-bold text-gray-400 uppercase">备注规则 (Mappings)</span>
-            <button @click="addMapping(group)" class="text-[10px] text-blue-500 hover:underline">+ 新增规则</button>
+            <span class="text-[10px] font-bold text-gray-400 uppercase">{{ t('group.mappings') }}</span>
+            <button @click="addMapping(group)" class="text-[10px] text-blue-500 hover:underline">{{ t('group.addMapping') }}</button>
           </div>
           
           <div v-for="(mapping, idx) in group.mappings" :key="idx" class="space-y-1 p-2 bg-gray-50 dark:bg-gray-900/50 rounded border border-gray-100 dark:border-gray-700 group/map">
             <div class="flex items-center gap-2">
               <select v-model="mapping.type" class="text-[10px] bg-white dark:bg-gray-800 border rounded p-0.5 outline-none">
-                <option value="equal">数值等于</option>
-                <option value="bit">位置位(1)</option>
+                <option value="equal">{{ t('group.typeEqual') }}</option>
+                <option value="bit">{{ t('group.typeBit') }}</option>
               </select>
               <input 
                 v-model="mapping.value" 
-                :placeholder="mapping.type === 'equal' ? '如 0x1' : '位偏移(如 0)'" 
+                :placeholder="mapping.type === 'equal' ? t('group.valuePlaceholder') : t('group.bitPlaceholder')" 
                 class="flex-1 text-[10px] p-1 bg-white dark:bg-gray-800 border rounded outline-none"
               />
               <button @click="removeMapping(group, idx)" class="text-gray-300 hover:text-red-500 transition-colors">
@@ -212,7 +213,7 @@ function handleDecInput(group: BitGroup, event: Event) {
             </div>
             <input 
               v-model="mapping.label" 
-              placeholder="显示备注" 
+              :placeholder="t('group.labelPlaceholder')" 
               class="w-full text-[10px] p-1 bg-white dark:bg-gray-800 border rounded outline-none"
             />
           </div>

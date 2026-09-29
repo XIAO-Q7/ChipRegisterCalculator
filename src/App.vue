@@ -5,8 +5,10 @@ import GroupList from './components/GroupList.vue'
 import ConfigManager from './components/ConfigManager.vue'
 import ProjectNavigator from './components/ProjectNavigator.vue'
 import Notification from './components/Notification.vue'
+import { useI18n, type Locale } from './i18n'
 
 const version = import.meta.env.VITE_APP_VERSION
+const { t, locale, setLocale, LOCALES } = useI18n()
 </script>
 
 <template>
@@ -19,7 +21,26 @@ const version = import.meta.env.VITE_APP_VERSION
         <h1 class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
           Chip Register Calculator
         </h1>
-        <p class="text-gray-500 dark:text-gray-400 mt-1 font-bold">芯片寄存器位计算工具 {{ version }}</p>
+        <p class="text-gray-500 dark:text-gray-400 mt-1 font-bold">{{ t('app.subtitle') }} {{ version }}</p>
+      </div>
+      <div
+        class="flex items-center rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-0.5 shadow-sm"
+        role="group"
+        :aria-label="t('app.language')"
+      >
+        <button
+          v-for="l in LOCALES"
+          :key="l.value"
+          @click="setLocale(l.value as Locale)"
+          class="px-3 py-1 text-xs font-bold rounded-md transition-all"
+          :class="locale === l.value
+            ? 'bg-blue-500 text-white shadow-sm'
+            : 'text-gray-500 hover:text-blue-500'"
+          :aria-pressed="locale === l.value"
+          :lang="l.value === 'zh' ? 'zh-CN' : 'en'"
+        >
+          {{ l.label }}
+        </button>
       </div>
     </header>
 
@@ -40,7 +61,7 @@ const version = import.meta.env.VITE_APP_VERSION
     </main>
 
     <footer class="max-w-[1600px] mx-auto mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 text-center text-gray-400 text-sm">
-      Built with Vue 3 + Tailwind CSS
+      {{ t('app.footer') }}
     </footer>
   </div>
 </template>
